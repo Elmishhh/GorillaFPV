@@ -257,7 +257,6 @@ namespace GorillaFPV
                 {
                     droneRB.transform.Rotate(new Vector3(rightJoystick.y, leftJoystick.x, -rightJoystick.x) * 6);
                     leftJoystick.y++;
-                    if (leftJoystick.y < 1.85) { leftJoystick.y *= 2; }
                     droneRB.AddForce(droneRB.transform.up * (leftJoystick.y * 75));
                 }
                 catch
