@@ -1,18 +1,22 @@
 # GorillaFPV
 ## a mod for gorilla tag
 
-**currently WIP**
-Todo list:
+after a lot of work and help from many many people, I'm happy to say I'm finally releasing this mod
 
-fix camera not swapping back to the player
+# Controls
+## left Joystick up/down = throttle
+> full up = 100%
+> center = 50%
+> full down = 0%
+### left Joystick left/right = Yaw axis rotation
+### left Primary button = flip drone (puts drone upright and stops the drone's rotation velocity)
 
-fix death spin when hitting any wall
+### right Joystick up/down = Pitch axis rotation
+### right Joystick left/right = Roll axis rotation
+### right Primary button = reset drone, puts the drone on the player's hand.
+### right Secondary button = switch camera, switches between the player and drone cameras
 
-add gravity and drag
-
-do something instead of making a git repository so early
-
-release mod
+Drone model from: <https://sketchfab.com/3d-models/dji-fpv-by-sdc-high-performance-drone-d471ea8c6235457b8e131842e2cf3783>
 
 ------------------------------------------------------------------------
 
