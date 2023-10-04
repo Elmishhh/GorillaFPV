@@ -61,11 +61,10 @@ namespace GorillaFPV
 
         public AssetBundle LoadAssetBundle(string path)
         {
-            using (Stream stream = Assembly.GetExecutingAssembly().GetManifestResourceStream(path))
-            {
-                AssetBundle bundle = AssetBundle.LoadFromStream(stream);
-                return bundle;
-            }
+            Stream stream = Assembly.GetExecutingAssembly().GetManifestResourceStream(path);
+            AssetBundle bundle = AssetBundle.LoadFromStream(stream);
+            stream.Close();
+            return bundle;
         }
         void ChangeCamera()
         {
@@ -180,7 +179,6 @@ namespace GorillaFPV
             Debug.Log("adding children colliders");
             foreach (Transform child in drone.transform) // no i am not proud of thise code but it is what it is
             {
-                Debug.Log($"Adding collider for {child.gameObject.name}");
                 if (child.name == "Empty")
                 {
                     foreach (Transform grandchildren in child.transform)
@@ -209,7 +207,10 @@ namespace GorillaFPV
 
         void OnEnable()
         {
-            if (gameInitialized) { Setup(); }
+            if (inRoom)
+            {
+                drone.SetActive(true);
+            }
             HarmonyPatches.ApplyHarmonyPatches();
         }
 
@@ -218,8 +219,7 @@ namespace GorillaFPV
             if (gameInitialized)
             {
                 if (droneCamera.activeSelf) { droneCamera.SetActive(false); }
-                GameObject.Destroy(drone);
-                GameObject.Destroy(droneCamera);
+                drone.SetActive(false);
             }
             HarmonyPatches.RemoveHarmonyPatches();
         }
@@ -248,6 +248,7 @@ namespace GorillaFPV
                 GetInputs();
                 ChangeCamera();
                 ResetDrone();
+                leftJoystick.y++;
 
                 if (leftJoystick.x < 0.15 && leftJoystick.x > -0.15) { leftJoystick.x = 0; } // makes a minimum force required
                 if (leftJoystick.x > 0.15) { leftJoystick.x -= 0.15f; } // makes up for the minimum force
@@ -255,8 +256,11 @@ namespace GorillaFPV
 
                 try
                 {
-                    droneRB.transform.Rotate(new Vector3(rightJoystick.y, leftJoystick.x, -rightJoystick.x) * 6);
-                    leftJoystick.y++;
+                    if (rightJoystick.y > 1.95f) { leftJoystick.y *= 2; }
+                    if (leftJoystick.x > 1.95f) { leftJoystick.x *= 2; }
+                    if (rightJoystick.x > 1.95f) { rightJoystick.x *= 2; }
+                    droneRB.transform.Rotate(new Vector3(rightJoystick.y, leftJoystick.x, -rightJoystick.x) * 4);
+                    if (leftJoystick.y > 1.95f) { leftJoystick.y *= 2.5f; }
                     droneRB.AddForce(droneRB.transform.up * (leftJoystick.y * 75));
                 }
                 catch
