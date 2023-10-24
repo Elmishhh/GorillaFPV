@@ -36,9 +36,6 @@ namespace GorillaFPV
 
         Quaternion cameraOffset = Quaternion.Euler(-50, 0, 0);
 
-        float droneGravity = 0.0000002f;
-        float idkwhattonamethis = 50;
-
         bool rightPrimary;
         bool prevRightPrimary;
 
@@ -152,7 +149,7 @@ namespace GorillaFPV
                 if (rightPrimary && !prevRightPrimary)
                 {
                     drone.transform.position = GorillaLocomotion.Player.Instance.rightHandFollower.position;
-                    drone.transform.rotation = Quaternion.identity;
+                    drone.transform.rotation = Quaternion.Euler(0, GorillaLocomotion.Player.Instance.rightControllerTransform.rotation.y + 105, 0);
                     droneRB.velocity = Vector3.zero;
                     droneRB.angularVelocity = Vector3.zero;
                     Debug.Log("RESET POSITION - DRONE");
@@ -237,7 +234,6 @@ namespace GorillaFPV
             {
                 Debug.LogError("failed to initialize mod");
                 Debug.LogError(ex);
-
             }
         }
 
@@ -254,19 +250,12 @@ namespace GorillaFPV
                 if (leftJoystick.x > 0.15) { leftJoystick.x -= 0.15f; } // makes up for the minimum force
                 else if (leftJoystick.x < -0.15) { leftJoystick.x += 0.15f; }
 
-                try
-                {
-                    if (rightJoystick.y > 1.95f) { leftJoystick.y *= 2; }
-                    if (leftJoystick.x > 1.95f) { leftJoystick.x *= 2; }
-                    if (rightJoystick.x > 1.95f) { rightJoystick.x *= 2; }
-                    droneRB.transform.Rotate(new Vector3(rightJoystick.y, leftJoystick.x, -rightJoystick.x) * 4);
-                    if (leftJoystick.y > 1.95f) { leftJoystick.y *= 2.5f; }
-                    droneRB.AddForce(droneRB.transform.up * (leftJoystick.y * 75));
-                }
-                catch
-                {
-                    // STOP SPAMMING ME LOGS WHEN DRONE IS A NULL DAMNIT
-                }
+                if (rightJoystick.y > 0.85f) { leftJoystick.y *= 2.5f; }
+                if (leftJoystick.x > 0.85f) { leftJoystick.x *= 2.5f; }
+                if (rightJoystick.x > 0.85f) { rightJoystick.x *= 2.5f; }
+                droneRB.transform.Rotate(new Vector3(rightJoystick.y, leftJoystick.x, -rightJoystick.x) * 4);
+                if (leftJoystick.y > 1.95f) { leftJoystick.y *= 2.5f; }
+                droneRB.AddForce(droneRB.transform.up * (leftJoystick.y * 75));
             }
         }
 
