@@ -14,6 +14,7 @@ using UnityEngine;
 using UnityEngine.XR;
 using Utilla;
 using Valve.VR;
+using System.ComponentModel;
 
 namespace GorillaFPV
 {
@@ -22,6 +23,7 @@ namespace GorillaFPV
     /// </summary>
 
     [ModdedGamemode]
+    [Description("HauntedModMenu")]
     [BepInDependency("org.legoandmars.gorillatag.utilla", "1.5.0")]
     [BepInPlugin(PluginInfo.GUID, PluginInfo.Name, PluginInfo.Version)]
     public class Plugin : BaseUnityPlugin
